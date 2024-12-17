@@ -1,4 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { STATUS_OPTIONS } from './../lib/constants/constant';
+import { Component, Inject, OnInit, output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -20,6 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Todo } from '../lib/interfaces';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-todo',
@@ -31,6 +34,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatButtonModule,
+    MatSelectModule,
     CommonModule,
     MatNativeDateModule,
   ],
@@ -40,16 +45,16 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class AddTodoComponent {
   form!: FormGroup;
+  STATUS_OPTIONS = STATUS_OPTIONS;
 
   constructor(
     public dialogRef: MatDialogRef<AddTodoComponent>,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) data: Todo
   ) {
-    console.log(data);
     this.form = this.fb.group({
       title: [data.title, Validators.required],
-      description: [data.description, Validators.required],
+      description: [data.description],
       dueDate: [data.dueDate, Validators.required],
       status: [data.status, Validators.required],
       isImportant: [data.isImportant, Validators.required],

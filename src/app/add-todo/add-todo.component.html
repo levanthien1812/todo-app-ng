@@ -15,6 +15,17 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-select formControlName="status">
+        <mat-option
+          *ngFor="let status of STATUS_OPTIONS"
+          [value]="status.value"
+        >
+          {{ status.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-checkbox formControlName="isImportant">Important?</mat-checkbox>
     <mat-checkbox formControlName="isUrgent">Urgent?</mat-checkbox>
   </mat-dialog-content>

@@ -14,7 +14,9 @@ import { AddTodoComponent } from '../add-todo/add-todo.component';
 export class TodoAppComponent {
   todoList = signal<Todo[]>([]);
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {
+    this.todoList.set(JSON.parse(localStorage.getItem('todoList') || '[]'));
+  }
 
   openTodo(): void {
     const dialogRef = this.dialog.open(AddTodoComponent, {
@@ -30,7 +32,13 @@ export class TodoAppComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) console.log(result);
+      if (result) {
+        console.log(result);
+        this.todoList.set([...this.todoList(), result]);
+        localStorage.setItem('todoList', JSON.stringify(this.todoList()));
+      } else {
+        console.log('no result');
+      }
     });
   }
 }

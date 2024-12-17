@@ -1,1 +1,49 @@
-<p>todo-item works!</p>
+<div>
+  <div class="flex justify-end">
+    <div class="{{ getStatusClass().badge }} rounded-t-md z-10 py-0 px-4">
+      <span class="font-bold text-sm leading-none">{{ getStatusLabel() }}</span>
+    </div>
+  </div>
+
+  <div
+    class="border-2 {{
+      getStatusClass().border
+    }} rounded-md rounded-tr-none shadow-md p-4 bg-white hover:bg-gray-100 relative"
+  >
+    <div class="flex space-x-4 justify-between items-start">
+      <div>
+        <h2 class="font-bold text-xl">{{ todoItem().title }}</h2>
+        <p class="text-gray-600 text-sm">{{ todoItem().description }}</p>
+      </div>
+      <div>
+        <select name="status" id="" (change)="onChangeStatus($event)">
+          @for (status of STATUS_OPTIONS; track status.value) {
+          <option
+            [value]="status.value"
+            [selected]="todoItem().status === status.value"
+          >
+            {{ status.label }}
+          </option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <p>Due date: {{ todoItem().dueDate }}</p>
+    <input
+      type="checkbox"
+      name="important"
+      id=""
+      [checked]="todoItem().isImportant"
+    />
+    <label for="important" class="ml-2">Important</label>
+    <input
+      type="checkbox"
+      name="urgent"
+      id=""
+      [checked]="todoItem().isUrgent"
+      class="ml-4"
+    />
+    <label for="urgent" class="ml-2">Urgent</label>
+  </div>
+</div>
