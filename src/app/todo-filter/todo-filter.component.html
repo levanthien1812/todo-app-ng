@@ -1,0 +1,81 @@
+<div
+  class="p-4 border-2 rounded-lg shadow-xl bg-white border-green-500 mt-6 min-w-[300px]"
+>
+  <div class="flex justify-between items-center" (click)="toggleFilter()">
+    <h2 class="font-bold">Todo Filter</h2>
+    <i class="fa-solid fa-chevron-down"></i>
+  </div>
+  @if (showFilter()) {
+
+  <div class="space-y-4">
+    <div>
+      <label for="searchString">Search</label>
+      <input
+        type="text"
+        name="searchString"
+        id=""
+        placeholder="Search by title or description"
+        class="filter-input"
+        [value]="currentFilter().searchString"
+        (input)="changeField($event)"
+      />
+    </div>
+    <div>
+      <label for="startDate">Start date</label>
+      <input
+        type="date"
+        name="startDate"
+        id=""
+        class="filter-input"
+        (input)="changeField($event)"
+        [value]="currentFilter().startDate"
+      />
+      <label for="endDate">End date"></label>
+      <input
+        type="date"
+        name="endDate"
+        id=""
+        class="filter-input"
+        [value]="currentFilter().endDate"
+        (input)="changeField($event)"
+      />
+    </div>
+    <div class="flex space-x-4">
+      <div>
+        <label for="isImportant">Important</label>
+        <input
+          type="checkbox"
+          name="isImportant"
+          id=""
+          class="ms-1"
+          [value]="currentFilter().isImportant"
+          (input)="changeField($event)"
+        />
+      </div>
+      <div>
+        <label for="isUrgent">Urgent</label>
+        <input
+          type="checkbox"
+          name="isUrgent"
+          id=""
+          class="ms-1"
+          [value]="currentFilter().isUrgent"
+          (input)="changeField($event)"
+        />
+      </div>
+    </div>
+    <div class="flex justify-end space-x-2">
+      <button type="button" class="cancel-btn" (click)="toggleFilter()">
+        Close filter
+      </button>
+      <button type="button" class="cancel-btn" (click)="resetFilter()">
+        Reset filter
+      </button>
+      <button type="submit" class="submit-btn" (click)="applyFilter()">
+        Apply filter
+      </button>
+    </div>
+  </div>
+
+  }
+</div>

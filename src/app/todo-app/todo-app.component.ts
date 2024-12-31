@@ -1,21 +1,75 @@
-import { Component, signal, Signal } from '@angular/core';
+import { Component, effect, signal, Signal } from '@angular/core';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { Todo } from '../lib/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
+import { TodoFilter } from '../lib/interfaces/filter.interface';
+import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 
 @Component({
   selector: 'app-todo-app',
   standalone: true,
-  imports: [TodoListComponent],
+  imports: [TodoListComponent, TodoFilterComponent],
   templateUrl: './todo-app.component.html',
   styleUrl: './todo-app.component.css',
 })
 export class TodoAppComponent {
   todoList = signal<Todo[]>([]);
+  filterredTodoList = signal<Todo[]>([]);
+  filter = signal<Partial<TodoFilter> | null>(null);
+  showFilter = signal<boolean>(false);
 
   constructor(public dialog: MatDialog) {
     this.todoList.set(JSON.parse(localStorage.getItem('todoList') || '[]'));
+    this.filterredTodoList.set(this.todoList());
+
+    effect(
+      () => {
+        const filter = this.filter();
+        if (filter) {
+          if (filter.startDate) {
+            this.filterredTodoList.set(
+              this.filterredTodoList().filter(
+                (todo) => todo.dueDate >= filter.startDate!
+              )
+            );
+          }
+          if (filter.endDate) {
+            this.filterredTodoList.set(
+              this.filterredTodoList().filter(
+                (todo) => todo.dueDate <= filter.startDate!
+              )
+            );
+          }
+          if (filter.searchString) {
+            this.filterredTodoList.set(
+              this.filterredTodoList().filter(
+                (todo) =>
+                  todo.title.includes(filter.searchString!) ||
+                  todo.description.includes(filter.searchString!)
+              )
+            );
+          }
+          if (filter.isImportant) {
+            this.filterredTodoList.set(
+              this.filterredTodoList().filter(
+                (todo) => todo.isImportant === filter.isImportant
+              )
+            );
+          }
+          if (filter.isUrgent) {
+            this.filterredTodoList.set(
+              this.filterredTodoList().filter(
+                (todo) => todo.isUrgent === filter.isUrgent
+              )
+            );
+          }
+        }
+      },
+      {
+        allowSignalWrites: true,
+      }
+    );
   }
 
   openTodo(): void {
