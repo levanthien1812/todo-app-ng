@@ -12,7 +12,13 @@
   >
     <div class="flex space-x-4 justify-between items-start">
       <div>
-        <h2 class="font-bold text-xl">{{ todoItem().title }}</h2>
+        <h2
+          class="font-bold text-xl"
+          appToggleColor
+          [currentStatus]="todoItem().status"
+        >
+          {{ todoItem().title }}
+        </h2>
         <p class="text-gray-600 text-sm">{{ todoItem().description }}</p>
       </div>
       <div>
@@ -29,7 +35,7 @@
       </div>
     </div>
 
-    <p>Due date: {{ todoItem().dueDate }}</p>
+    <p>Due date: {{ todoItem().dueDate | date }}</p>
     <input
       type="checkbox"
       name="important"

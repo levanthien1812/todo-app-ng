@@ -5,9 +5,7 @@
     <h2 class="font-bold">Todo Filter</h2>
     <i class="fa-solid fa-chevron-down"></i>
   </div>
-  @if (showFilter()) {
-
-  <div class="space-y-4">
+  <div class="space-y-4" *ngIf="showFilter()">
     <div>
       <label for="searchString">Search</label>
       <input
@@ -76,6 +74,4 @@
       </button>
     </div>
   </div>
-
-  }
 </div>

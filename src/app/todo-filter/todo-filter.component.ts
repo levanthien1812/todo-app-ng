@@ -1,6 +1,7 @@
 import { Component, input, model, output, signal } from '@angular/core';
 import { Todo } from '../lib/interfaces';
 import { TodoFilter } from '../lib/interfaces/filter.interface';
+import { NgIf } from '@angular/common';
 
 const INITIAL_FILTER: Partial<TodoFilter> = {
   startDate: undefined,
@@ -14,7 +15,7 @@ const INITIAL_FILTER: Partial<TodoFilter> = {
 @Component({
   selector: 'app-todo-filter',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './todo-filter.component.html',
   styleUrl: './todo-filter.component.css',
 })

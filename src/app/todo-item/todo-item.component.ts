@@ -2,11 +2,13 @@ import { STATUS_OPTIONS } from './../lib/constants/constant';
 import { Component, input, output } from '@angular/core';
 import { Todo } from '../lib/interfaces';
 import { MatIconModule } from '@angular/material/icon';
+import { DatePipe } from '@angular/common';
+import { ToggleColorDirective } from '../directives/toggle-color.directive';
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, DatePipe, ToggleColorDirective],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.css',
 })
