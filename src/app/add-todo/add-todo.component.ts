@@ -53,6 +53,7 @@ export class AddTodoComponent {
     @Inject(MAT_DIALOG_DATA) data: Todo
   ) {
     this.form = this.fb.group({
+      id: [Number(Math.random().toFixed(4)) * 1000],
       title: [data.title, Validators.required],
       description: [data.description],
       dueDate: [data.dueDate, Validators.required],

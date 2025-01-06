@@ -4,11 +4,18 @@ import { Todo } from '../lib/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
 import { ToggleColorDirective } from '../directives/toggle-color.directive';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [MatIconModule, DatePipe, ToggleColorDirective],
+  imports: [
+    MatIconModule,
+    DatePipe,
+    ToggleColorDirective,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.css',
 })

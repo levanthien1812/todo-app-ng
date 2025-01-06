@@ -1,7 +1,10 @@
+import { STATUS_VALUE } from '../constants/constant';
+
 export interface Todo {
+  id: number;
   title: string;
-  createdAt: Date;
-  status: 'not-started' | 'in-progress' | 'done';
+  createdAt?: Date;
+  status: (typeof STATUS_VALUE)[keyof typeof STATUS_VALUE];
   dueDate: Date;
   description: string;
   isImportant: boolean;

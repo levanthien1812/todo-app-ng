@@ -1,0 +1,101 @@
+<div class="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">Todo Detail</h1>
+
+  <!-- Todo Title -->
+  <div class="flex items-center mb-4 space-x-2">
+    <h2 class="text-2xl font-semibold text-gray-900">
+      {{ this.todo()?.title }}
+    </h2>
+    <span
+      *ngIf="this.todo()?.isImportant"
+      class="px-3 py-1 rounded-full text-sm font-medium text-white bg-red-500"
+      >Important</span
+    >
+    <span
+      *ngIf="this.todo()?.isUrgent"
+      class="px-3 py-1 rounded-full text-sm font-medium text-white bg-yellow-500"
+      >Not Urgent</span
+    >
+  </div>
+
+  <!-- Todo Description -->
+  <div class="mb-4">
+    <h3 class="text-lg font-semibold text-gray-700">Description:</h3>
+    <p class="text-gray-600">{{ this.todo()?.description }}</p>
+  </div>
+
+  <!-- Due Date -->
+  <div class="mb-4">
+    <h3 class="text-lg font-semibold text-gray-700">Due Date:</h3>
+    <p class="text-gray-600">{{ this.todo()?.dueDate | date }}</p>
+  </div>
+
+  <!-- Status -->
+  <div class="mb-4">
+    <h3 class="text-lg font-semibold text-gray-700">Status:</h3>
+    <span
+      class="px-3 py-1 rounded-full text-sm font-medium text-white bg-green-500"
+      >{{ this.todo()?.status }}</span
+    >
+  </div>
+
+  <!-- Subtasks -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700">Subtasks:</h3>
+    <ul class="list-disc pl-5">
+      <li class="flex items-center mb-2">
+        <input type="checkbox" checked class="mr-3" />
+        <span class="text-gray-600">Prepare ingredients</span>
+      </li>
+      <li class="flex items-center mb-2">
+        <input type="checkbox" class="mr-3" />
+        <span class="text-gray-600">Cook fish cake noodle soup</span>
+      </li>
+      <li class="flex items-center mb-2">
+        <input type="checkbox" class="mr-3" />
+        <span class="text-gray-600">Serve and enjoy</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Images -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700">Images:</h3>
+    <div class="flex space-x-4">
+      <img
+        src="https://via.placeholder.com/150"
+        alt="Image 1"
+        class="w-24 h-24 object-cover rounded-lg shadow-md"
+      />
+      <img
+        src="https://via.placeholder.com/150"
+        alt="Image 2"
+        class="w-24 h-24 object-cover rounded-lg shadow-md"
+      />
+    </div>
+  </div>
+
+  <!-- Additional Information (Optional) -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700">Notes:</h3>
+    <textarea
+      class="w-full p-3 border rounded-md shadow-sm"
+      rows="4"
+      placeholder="Add any notes here..."
+    ></textarea>
+  </div>
+
+  <!-- Actions (Optional) -->
+  <div class="flex justify-between">
+    <button
+      class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+    >
+      Edit
+    </button>
+    <button
+      class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+    >
+      Delete
+    </button>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+import { INITIAL_TODOS } from './../lib/data/dummy/todos';
 import { Component, effect, signal, Signal } from '@angular/core';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { Todo } from '../lib/interfaces';
@@ -5,11 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { TodoFilter } from '../lib/interfaces/filter.interface';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-todo-app',
   standalone: true,
-  imports: [TodoListComponent, TodoFilterComponent],
+  imports: [TodoListComponent, TodoFilterComponent, RouterOutlet],
   templateUrl: './todo-app.component.html',
   styleUrl: './todo-app.component.css',
 })
@@ -20,7 +22,7 @@ export class TodoAppComponent {
   showFilter = signal<boolean>(false);
 
   constructor(public dialog: MatDialog) {
-    this.todoList.set(JSON.parse(localStorage.getItem('todoList') || '[]'));
+    this.todoList.set(INITIAL_TODOS);
     this.filterredTodoList.set(this.todoList());
 
     effect(
@@ -87,7 +89,6 @@ export class TodoAppComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
         this.todoList.set([...this.todoList(), result]);
         localStorage.setItem('todoList', JSON.stringify(this.todoList()));
       } else {
