@@ -28,6 +28,52 @@
 
     <mat-checkbox formControlName="isImportant">Important?</mat-checkbox>
     <mat-checkbox formControlName="isUrgent">Urgent?</mat-checkbox>
+    <div>
+      <button
+        type="button"
+        (click)="clickDetail()"
+        class="hover:underline text-sm"
+      >
+        {{ !showDetail() ? "More details" : "Hide details" }}
+        <span
+          ><i
+            class="fa-solid fa-chevron-down {{
+              showDetail() ? 'rotate-180' : 'rotate-0'
+            }} transition-all ease-in-out duration-300"
+          ></i
+        ></span>
+      </button>
+      <div *ngIf="showDetail()" class="mt-4">
+        <label for="">Subtasks</label>
+        <div class="border rounded-md border-gray-500 p-4">
+          <div *ngFor="let subtask of subtasks.controls; let i = index">
+            <div
+              class="flex justify-between items-center space-x-2"
+              formArrayName="subtasks"
+            >
+              <mat-form-field appearance="fill" class="w-full">
+                <input
+                  matInput
+                  [formControlName]="i"
+                  placeholder="Enter subtask"
+                />
+              </mat-form-field>
+              <button
+                type="button"
+                class="secondary-btn"
+                (click)="removeSubtask(i)"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="primary-btn" (click)="addSubtask()">
+            Add subtask
+          </button>
+        </div>
+        <div></div>
+      </div>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>

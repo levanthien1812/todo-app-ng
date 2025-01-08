@@ -51,6 +51,14 @@
       class="ml-4"
     />
     <label for="urgent" class="ml-2">Urgent</label>
+    <div
+      class="mt-4"
+      *ngIf="todoItem().subtasks && todoItem().subtasks!.length > 0"
+    >
+      <p>
+        <span>{{ todoItem().subtasks!.length }}</span> subtasks
+      </p>
+    </div>
   </div>
   <a
     class="no-underline text-blue-500 text-sm italic hover:underline hover:text-green-600"

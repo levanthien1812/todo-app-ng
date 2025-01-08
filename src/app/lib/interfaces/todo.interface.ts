@@ -9,4 +9,11 @@ export interface Todo {
   description: string;
   isImportant: boolean;
   isUrgent: boolean;
+  // more detail info
+  subtasks?: {
+    title: string;
+    isCompleted: boolean;
+  }[];
+  notes?: string[];
+  tags?: string[];
 }

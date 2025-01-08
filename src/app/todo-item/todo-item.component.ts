@@ -2,7 +2,7 @@ import { STATUS_OPTIONS } from './../lib/constants/constant';
 import { Component, input, output } from '@angular/core';
 import { Todo } from '../lib/interfaces';
 import { MatIconModule } from '@angular/material/icon';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { ToggleColorDirective } from '../directives/toggle-color.directive';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     ToggleColorDirective,
     RouterLink,
     RouterLinkActive,
+    NgIf,
   ],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.css',

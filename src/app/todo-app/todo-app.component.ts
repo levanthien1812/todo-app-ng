@@ -28,45 +28,37 @@ export class TodoAppComponent {
     effect(
       () => {
         const filter = this.filter();
+        let filteredTodoList = this.todoList();
         if (filter) {
           if (filter.startDate) {
-            this.filterredTodoList.set(
-              this.filterredTodoList().filter(
-                (todo) => todo.dueDate >= filter.startDate!
-              )
+            filteredTodoList = this.todoList().filter(
+              (todo) => todo.dueDate >= filter.startDate!
             );
           }
           if (filter.endDate) {
-            this.filterredTodoList.set(
-              this.filterredTodoList().filter(
-                (todo) => todo.dueDate <= filter.startDate!
-              )
+            filteredTodoList = filteredTodoList.filter(
+              (todo) => todo.dueDate <= filter.startDate!
             );
           }
           if (filter.searchString) {
-            this.filterredTodoList.set(
-              this.filterredTodoList().filter(
-                (todo) =>
-                  todo.title.includes(filter.searchString!) ||
-                  todo.description.includes(filter.searchString!)
-              )
+            filteredTodoList = filteredTodoList.filter(
+              (todo) =>
+                todo.title.includes(filter.searchString!) ||
+                todo.description.includes(filter.searchString!)
             );
           }
           if (filter.isImportant) {
-            this.filterredTodoList.set(
-              this.filterredTodoList().filter(
-                (todo) => todo.isImportant === filter.isImportant
-              )
+            filteredTodoList = filteredTodoList.filter(
+              (todo) => todo.isImportant === filter.isImportant
             );
           }
           if (filter.isUrgent) {
-            this.filterredTodoList.set(
-              this.filterredTodoList().filter(
-                (todo) => todo.isUrgent === filter.isUrgent
-              )
+            filteredTodoList = filteredTodoList.filter(
+              (todo) => todo.isUrgent === filter.isUrgent
             );
           }
         }
+        this.filterredTodoList.set(filteredTodoList);
       },
       {
         allowSignalWrites: true,
@@ -77,19 +69,18 @@ export class TodoAppComponent {
   openTodo(): void {
     const dialogRef = this.dialog.open(AddTodoComponent, {
       width: '500px',
-      data: {
-        title: '',
-        description: '',
-        dueDate: new Date(),
-        status: 'not-started',
-        isImportant: false,
-        isUrgent: false,
-      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.todoList.set([...this.todoList(), result]);
+        const mappedResult = {
+          ...result,
+          subtasks: result.subtasks.map((subtask: string) => ({
+            title: subtask,
+            isCompleted: false,
+          })),
+        };
+        this.todoList.set([...this.todoList(), mappedResult]);
         localStorage.setItem('todoList', JSON.stringify(this.todoList()));
       } else {
         console.log('no result');
