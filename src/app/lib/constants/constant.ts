@@ -9,3 +9,5 @@ export const STATUS_OPTIONS = [
   { value: STATUS_VALUE.IN_PROGRESS, label: 'In Progress' },
   { value: STATUS_VALUE.DONE, label: 'Done' },
 ];
+
+export const ALLOWED_MAXIMUM_TAGS = 10;

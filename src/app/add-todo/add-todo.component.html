@@ -44,39 +44,70 @@
         ></span>
       </button>
       <div *ngIf="showDetail()" class="mt-4">
-        <label for="">Subtasks</label>
+        <mat-label for="">Subtasks</mat-label>
         <div class="border rounded-md border-gray-500 p-4">
           <div *ngFor="let subtask of subtasks.controls; let i = index">
             <div
               class="flex justify-between items-center space-x-2"
               formArrayName="subtasks"
             >
-              <mat-form-field appearance="fill" class="w-full">
-                <input
-                  matInput
-                  [formControlName]="i"
-                  placeholder="Enter subtask"
-                />
-              </mat-form-field>
+              <input
+                [formControlName]="i"
+                placeholder="Enter subtask"
+                class="w-full rounded-md px-2 py-2 border-green-600 g-white text-black border outline-none text-center text-sm"
+                (keydown.enter)="enterSubtask($event)"
+              />
               <button
                 type="button"
-                class="secondary-btn"
+                class="secondary-btn rounded-md py-2"
                 (click)="removeSubtask(i)"
               >
-                <i class="fa-solid fa-trash"></i>
+                <i class="fa-solid fa-trash text-sm"></i>
               </button>
             </div>
           </div>
-          <button type="button" class="primary-btn" (click)="addSubtask()">
+          <button
+            type="button"
+            class="primary-btn mt-1 text-sm font-normal"
+            (click)="addSubtask()"
+          >
             Add subtask
           </button>
         </div>
-        <div></div>
+        <div class="mt-4">
+          <mat-label for="">Tags</mat-label>
+          <div class="flex space-x-2 mt-2 flex-wrap">
+            <div *ngFor="let tag of tags.controls; let i = index">
+              <div formArrayName="tags">
+                <input
+                  type="text"
+                  placeholder="Enter tag"
+                  (keydown.enter)="addTag($event, i)"
+                  [formControlName]="i"
+                  #tagInput
+                  [ngClass]="{
+                    'bg-white text-black': currentTagIndex() === i
+                  }"
+                  class="min-w-[100px] w-0 rounded-full px-2 py-2 border-green-600 bg-green-600 text-white border outline-none text-center text-sm"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <mat-form-field appearance="fill" class="w-full mt-4">
+            <mat-label for="notes">Notes</mat-label>
+            <input matInput formControlName="notes" />
+          </mat-form-field>
+        </div>
       </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Submit</button>
+    <button mat-raised-button color="primary" type="submit">
+      {{ data ? "Update" : "Create" }}
+    </button>
   </mat-dialog-actions>
 </form>

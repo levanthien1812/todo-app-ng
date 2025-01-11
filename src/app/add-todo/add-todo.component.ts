@@ -1,5 +1,16 @@
-import { STATUS_OPTIONS, STATUS_VALUE } from './../lib/constants/constant';
-import { Component, Inject, signal } from '@angular/core';
+import {
+  ALLOWED_MAXIMUM_TAGS,
+  STATUS_OPTIONS,
+  STATUS_VALUE,
+} from './../lib/constants/constant';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  QueryList,
+  signal,
+  ViewChildren,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -7,7 +18,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -42,12 +57,16 @@ export class AddTodoComponent {
   form!: FormGroup;
   STATUS_OPTIONS = STATUS_OPTIONS;
   showDetail = signal(false);
+  currentTagIndex = signal(0);
+
+  @ViewChildren('tagInput') tagInputs!: QueryList<ElementRef>;
 
   constructor(
     public dialogRef: MatDialogRef<AddTodoComponent>,
     private fb: FormBuilder,
-    @Inject('data') public data?: Todo
+    @Inject(MAT_DIALOG_DATA) public data?: Todo
   ) {
+    console.log(data);
     if (data) {
       this.form = this.fb.group({
         id: [data.id],
@@ -61,7 +80,10 @@ export class AddTodoComponent {
           data.subtasks?.map((subtask) => subtask.title) || ['']
         ),
         notes: [data.notes],
-        tags: this.fb.array(data.tags || []),
+        tags: this.fb.array(
+          data.tags && data.tags.length > 0 ? data.tags : [''],
+          [Validators.minLength(1)]
+        ),
       });
     } else
       this.form = this.fb.group({
@@ -74,12 +96,16 @@ export class AddTodoComponent {
         isUrgent: [false, Validators.required],
         subtasks: this.fb.array(['']),
         notes: [''],
-        tags: this.fb.array([]),
+        tags: this.fb.array([this.fb.control('', [Validators.minLength(1)])]),
       });
   }
 
   get subtasks() {
     return this.form.get('subtasks') as FormArray;
+  }
+
+  enterSubtask(event: any) {
+    event.preventDefault();
   }
 
   addSubtask() {
@@ -91,9 +117,30 @@ export class AddTodoComponent {
   }
 
   onSubmit(): void {
+    console.log(this.form.value);
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
+  }
+
+  get tags() {
+    return this.form.get('tags') as FormArray;
+  }
+
+  addTag(event: any, index: number) {
+    event.preventDefault();
+    if (event.target.value.trim().length === 0) return;
+    this.currentTagIndex.set(index + 1);
+    this.tags.push(this.fb.control(''));
+
+    setTimeout(() => {
+      const tagInputsArray = this.tagInputs.toArray();
+      tagInputsArray[index + 1].nativeElement.focus();
+    });
+  }
+
+  removeTag(index: number) {
+    this.tags.removeAt(index);
   }
 
   clickDetail() {

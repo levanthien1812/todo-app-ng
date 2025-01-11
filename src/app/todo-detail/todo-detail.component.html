@@ -1,5 +1,6 @@
 <div class="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
   <h1 class="text-3xl font-bold text-gray-800 mb-4">Todo Detail</h1>
+
   <div *ngIf="this.todo()">
     <!-- Todo Title -->
     <div class="flex items-center mb-4 space-x-2">
@@ -16,6 +17,15 @@
         class="px-3 py-1 rounded-full text-sm font-medium text-white bg-yellow-500"
         >Urgent</span
       >
+    </div>
+    <div class="flex items-center gap-2 mt-2">
+      <ng-container *ngFor="let tag of todo()?.tags">
+        <div
+          class="px-2 py-1 rounded-full text-sm font-medium text-white bg-green-600 uppercase"
+        >
+          {{ tag }}
+        </div>
+      </ng-container>
     </div>
 
     <!-- Todo Description -->
@@ -42,20 +52,30 @@
     <!-- Subtasks -->
     <div class="mb-6">
       <h3 class="text-lg font-semibold text-gray-700">Subtasks:</h3>
-      <ul class="list-disc pl-5">
-        <li class="flex items-center mb-2">
-          <input type="checkbox" checked class="mr-3" />
-          <span class="text-gray-600">Prepare ingredients</span>
-        </li>
-        <li class="flex items-center mb-2">
-          <input type="checkbox" class="mr-3" />
-          <span class="text-gray-600">Cook fish cake noodle soup</span>
-        </li>
-        <li class="flex items-center mb-2">
-          <input type="checkbox" class="mr-3" />
-          <span class="text-gray-600">Serve and enjoy</span>
-        </li>
-      </ul>
+      <div
+        class="pl-5 p-2 border rounded-md space-y-1"
+        *ngIf="
+          this.todo()?.subtasks && (this.todo()?.subtasks)!.length > 0;
+          else noSubtasks
+        "
+      >
+        <ul *ngFor="let subtask of this.todo()?.subtasks">
+          <li class="flex items-center">
+            <input
+              type="checkbox"
+              [checked]="subtask.isCompleted"
+              class="mr-3"
+              [name]="subtask.title"
+            />
+            <label class="text-gray-600" [for]="subtask.title">{{
+              subtask.title
+            }}</label>
+          </li>
+        </ul>
+      </div>
+      <ng-template #noSubtasks>
+        <p class="text-gray-600">No subtasks provided!</p>
+      </ng-template>
     </div>
 
     <!-- Images -->
@@ -79,9 +99,10 @@
     <div class="mb-6">
       <h3 class="text-lg font-semibold text-gray-700">Notes:</h3>
       <textarea
-        class="w-full p-3 border rounded-md shadow-sm"
+        class="w-full p-3 border rounded-md shadow-sm outline-green-500"
         rows="4"
         placeholder="Add any notes here..."
+        [value]="this.todo()?.notes || ''"
       ></textarea>
     </div>
 
