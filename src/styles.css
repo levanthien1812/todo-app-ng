@@ -4,8 +4,7 @@
 
 @layer components {
   .primary-btn {
-    @apply inline;
-    padding: 0.5rem 1rem;
+    @apply inline px-2.5 py-1.5;
     background-color: #16a34a;
     color: #ffffff;
     font-size: 1rem;
@@ -66,5 +65,17 @@
     border-color: #e5e7eb;
     cursor: not-allowed;
     opacity: 0.7;
+  }
+
+  .form-field {
+    @apply mb-4 flex flex-col gap-0.5
+  }
+
+  .base-input {
+    @apply outline-none bg-white rounded-md border border-gray-200 focus:border-green-400 shadow-sm shadow-gray-100 hover:bg-gray-100 px-2.5 py-1.5
+  }
+
+  .base-label {
+    @apply text-gray-700 me-1
   }
 }
