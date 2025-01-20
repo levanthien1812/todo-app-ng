@@ -1,1 +1,38 @@
-<p>login works!</p>
+<form
+  action=""
+  [formGroup]="form"
+  class="mx-auto mt-12 w-[500px] p-6 rounded-xl shadow-md bg-white shadow-green-400"
+>
+  <p class="mb-4 text-3xl text-center font-bold handlee">Login</p>
+  <div class="form-field">
+    <label class="base-label" for="email">Email:</label>
+    <input
+      class="base-input"
+      type="email"
+      name="email"
+      formControlName="email"
+      id=""
+    />
+  </div>
+  <div class="form-field">
+    <label class="base-label" for="password">Password:</label>
+    <input
+      class="base-input"
+      type="password"
+      name="password"
+      formControlName="password"
+      id=""
+    />
+  </div>
+  <button
+    type="submit"
+    class="primary-btn mx-auto block w-full mt-4"
+    [disabled]="!form.valid"
+  >
+    Login
+  </button>
+  <p class="text-center mt-4">
+    Do not have an account?
+    <a routerLink="/register" class="base-link">Register</a>
+  </p>
+</form>

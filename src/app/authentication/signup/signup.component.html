@@ -1,18 +1,22 @@
 <form
   action=""
   [formGroup]="form"
-  class="mx-auto mt-12 w-[500px] p-6 rounded-xl shadow-md bg-white shadow-green-400"
+  (ngSubmit)="onSubmit()"
+  class="mx-auto mt-12 w-[500px] p-6 rounded-xl shadow-lg bg-white border-2 border-green-300"
 >
   <p class="mb-4 text-3xl text-center font-bold handlee">Sign Up</p>
   <div class="form-field">
-    <label class="base-label" for="username">Username:</label>
+    <label class="base-label" for="name">Name:</label>
     <input
       class="base-input"
       type="text"
-      name="username"
-      formControlName="username"
+      name="name"
+      formControlName="name"
       id=""
     />
+    <p *ngIf="form.get('name')?.hasError('required')" class="base-error-text">
+      Name is required!
+    </p>
   </div>
   <div class="form-field">
     <label class="base-label" for="email">Email:</label>
@@ -23,28 +27,69 @@
       formControlName="email"
       id=""
     />
+    <p *ngIf="form.get('email')?.hasError('required')" class="base-error-text">
+      Email is required!
+    </p>
+    <p *ngIf="form.get('email')?.hasError('email')" class="base-error-text">
+      Invalid email!
+    </p>
   </div>
   <div class="form-field">
     <label class="base-label" for="password">Password:</label>
     <input
       class="base-input"
-      type="text"
+      type="password"
       name="password"
       formControlName="password"
       id=""
     />
+    <p
+      *ngIf="form.get('password')?.hasError('required')"
+      class="base-error-text"
+    >
+      Password is required!
+    </p>
+    <p
+      *ngIf="form.get('password')?.hasError('minlength')"
+      class="base-error-text"
+    >
+      Password must be at least 6 characters!
+    </p>
+    <p
+      *ngIf="form.get('password')?.hasError('maxlength')"
+      class="base-error-text"
+    >
+      Password must be at most 20 characters!
+    </p>
   </div>
   <div class="form-field">
     <label class="base-label" for="confirmPassword">Confirm Password:</label>
     <input
       class="base-input"
-      type="text"
+      type="password"
       name="confirmPassword"
       formControlName="confirmPassword"
       id=""
     />
+    <p
+      *ngIf="form.get('confirmPassword')?.hasError('required')"
+      class="base-error-text"
+    >
+      Confirm password is required!
+    </p>
+    <p *ngIf="form.hasError('passwordMismatch')" class="base-error-text">
+      Passwords must match!
+    </p>
   </div>
-  <button type="submit" class="primary-btn mx-auto block w-full mt-4">
+  <button
+    type="submit"
+    class="primary-btn mx-auto block w-full mt-4"
+    [disabled]="!form.valid"
+  >
     Sign Up
   </button>
+  <p class="text-center mt-4">
+    Already have an account?
+    <a routerLink="/login" class="base-link">Login</a>
+  </p>
 </form>

@@ -84,4 +84,12 @@
   .base-label {
     @apply text-gray-700 me-1
   }
+
+  .base-link {
+    @apply text-green-600 hover:text-green-700 hover:underline hover:italic visited:text-green-600
+  }
+
+  .base-error-text {
+    @apply text-red-500 text-sm mt-1 text-end italic
+  }
 }
