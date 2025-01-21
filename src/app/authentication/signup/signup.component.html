@@ -6,7 +6,7 @@
 >
   <p class="mb-4 text-3xl text-center font-bold handlee">Sign Up</p>
   <div class="form-field">
-    <label class="base-label" for="name">Name:</label>
+    <label class="base-label" appRequiredLabel for="name">Name:</label>
     <input
       class="base-input"
       type="text"
@@ -14,12 +14,17 @@
       formControlName="name"
       id=""
     />
-    <p *ngIf="form.get('name')?.hasError('required')" class="base-error-text">
+    <p
+      *ngIf="
+        form.get('name')?.hasError('required') && form.get('name')?.touched
+      "
+      class="base-error-text"
+    >
       Name is required!
     </p>
   </div>
   <div class="form-field">
-    <label class="base-label" for="email">Email:</label>
+    <label class="base-label" appRequiredLabel for="email">Email:</label>
     <input
       class="base-input"
       type="email"
@@ -27,15 +32,20 @@
       formControlName="email"
       id=""
     />
-    <p *ngIf="form.get('email')?.hasError('required')" class="base-error-text">
-      Email is required!
-    </p>
-    <p *ngIf="form.get('email')?.hasError('email')" class="base-error-text">
-      Invalid email!
-    </p>
+    <ng-container *ngIf="form.get('email')?.touched">
+      <p
+        *ngIf="form.get('email')?.hasError('required')"
+        class="base-error-text"
+      >
+        Email is required!
+      </p>
+      <p *ngIf="form.get('email')?.hasError('email')" class="base-error-text">
+        Invalid email!
+      </p>
+    </ng-container>
   </div>
   <div class="form-field">
-    <label class="base-label" for="password">Password:</label>
+    <label class="base-label" appRequiredLabel for="password">Password:</label>
     <input
       class="base-input"
       type="password"
@@ -43,27 +53,31 @@
       formControlName="password"
       id=""
     />
-    <p
-      *ngIf="form.get('password')?.hasError('required')"
-      class="base-error-text"
-    >
-      Password is required!
-    </p>
-    <p
-      *ngIf="form.get('password')?.hasError('minlength')"
-      class="base-error-text"
-    >
-      Password must be at least 6 characters!
-    </p>
-    <p
-      *ngIf="form.get('password')?.hasError('maxlength')"
-      class="base-error-text"
-    >
-      Password must be at most 20 characters!
-    </p>
+    <ng-container *ngIf="form.get('password')?.touched">
+      <p
+        *ngIf="form.get('password')?.hasError('required')"
+        class="base-error-text"
+      >
+        Password is required!
+      </p>
+      <p
+        *ngIf="form.get('password')?.hasError('minlength')"
+        class="base-error-text"
+      >
+        Password must be at least 6 characters!
+      </p>
+      <p
+        *ngIf="form.get('password')?.hasError('maxlength')"
+        class="base-error-text"
+      >
+        Password must be at most 20 characters!
+      </p>
+    </ng-container>
   </div>
   <div class="form-field">
-    <label class="base-label" for="confirmPassword">Confirm Password:</label>
+    <label class="base-label" appRequiredLabel for="confirmPassword"
+      >Confirm Password:</label
+    >
     <input
       class="base-input"
       type="password"
@@ -71,15 +85,17 @@
       formControlName="confirmPassword"
       id=""
     />
-    <p
-      *ngIf="form.get('confirmPassword')?.hasError('required')"
-      class="base-error-text"
-    >
-      Confirm password is required!
-    </p>
-    <p *ngIf="form.hasError('passwordMismatch')" class="base-error-text">
-      Passwords must match!
-    </p>
+    <ng-container *ngIf="form.get('confirmPassword')?.touched">
+      <p
+        *ngIf="form.get('confirmPassword')?.hasError('required')"
+        class="base-error-text"
+      >
+        Confirm password is required!
+      </p>
+      <p *ngIf="form.hasError('passwordMismatch')" class="base-error-text">
+        Passwords must match!
+      </p>
+    </ng-container>
   </div>
   <button
     type="submit"

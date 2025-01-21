@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { passwordMatchValidator } from '../../lib/validators';
+import { RequiredLabelDirective } from '../../directives/required-label.directive';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgIf],
+  imports: [ReactiveFormsModule, RouterLink, NgIf, RequiredLabelDirective],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
