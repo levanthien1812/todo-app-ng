@@ -9,6 +9,8 @@ import {
 import { RouterLink } from '@angular/router';
 import { passwordMatchValidator } from '../../lib/validators';
 import { RequiredLabelDirective } from '../../directives/required-label.directive';
+import { EmailExistsValidator } from '../../lib/validators/email.validator';
+import { AuthService } from '../../lib/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -21,11 +23,22 @@ export class SignupComponent {
   form: FormGroup;
   isCorrectConfirmPassword = signal<boolean>(false);
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private emailExistsValidator: EmailExistsValidator,
+    private authService: AuthService
+  ) {
     this.form = this.fb.group(
       {
         name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        email: [
+          '',
+          [Validators.required, Validators.email],
+          [this.emailExistsValidator.validate.bind(this.emailExistsValidator)],
+          {
+            updateOn: 'blur',
+          },
+        ],
         password: [
           '',
           [
@@ -50,6 +63,8 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    this.authService.register(this.form.value).then((res) => {
+      console.log(res);
+    });
   }
 }
