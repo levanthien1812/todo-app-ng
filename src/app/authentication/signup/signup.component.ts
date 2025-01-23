@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -60,11 +60,20 @@ export class SignupComponent {
         validators: passwordMatchValidator(),
       }
     );
+
+    effect(() => {
+      console.log(this.form.value);
+    });
   }
 
   onSubmit() {
-    this.authService.register(this.form.value).then((res) => {
-      console.log(res);
+    this.authService.register(this.form.value).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }

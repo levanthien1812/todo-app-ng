@@ -11,14 +11,19 @@ export class EmailExistsValidator implements AsyncValidator {
   constructor(private authService: AuthService) {}
 
   async validate(control: AbstractControl): Promise<ValidationErrors | null> {
-    return this.authService
-      .checkEmailExists(control.value)
-      .then((result) => {
-        return result.isEmailExists ? { emailExists: true } : null;
+    return new Promise((resolve, reject) =>
+      this.authService.checkEmailExists(control.value).subscribe({
+        next: (res) => {
+          if (res.isEmailExists) {
+            return resolve({ emailExists: true });
+          }
+          return resolve(null);
+        },
+        error: (err) => {
+          console.log(err);
+          return reject(null);
+        },
       })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
+    );
   }
 }
