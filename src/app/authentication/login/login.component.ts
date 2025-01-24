@@ -5,8 +5,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RequiredLabelDirective } from '../../directives/required-label.directive';
+import { AuthService } from '../../lib/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ import { RequiredLabelDirective } from '../../directives/required-label.directiv
 export class LoginComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -26,6 +31,6 @@ export class LoginComponent {
   }
 
   submit() {
-    console.log(this.form.value);
+    this.authService.login(this.form.value);
   }
 }

@@ -4,6 +4,7 @@ import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { AuthGuard } from './lib/services/auth.guard';
 
 export const routes: Routes = [
   {
@@ -20,11 +21,13 @@ export const routes: Routes = [
     path: 'todos',
     component: TodoAppComponent,
     title: 'Todo App',
+    canActivate: [AuthGuard],
   },
   {
     path: 'todos/:todo-id',
     component: TodoDetailComponent,
     title: 'Todo Detail',
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

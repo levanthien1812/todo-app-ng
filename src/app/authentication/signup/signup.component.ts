@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { passwordMatchValidator } from '../../lib/validators';
 import { RequiredLabelDirective } from '../../directives/required-label.directive';
 import { EmailExistsValidator } from '../../lib/validators/email.validator';
@@ -26,7 +26,8 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder,
     private emailExistsValidator: EmailExistsValidator,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.form = this.fb.group(
       {
@@ -67,13 +68,6 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    this.authService.register(this.form.value).subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.authService.register(this.form.value);
   }
 }

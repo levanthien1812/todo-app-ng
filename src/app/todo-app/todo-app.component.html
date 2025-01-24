@@ -1,13 +1,28 @@
-<div class="container mx-auto w-[500px] mt-12 flex flex-col items-center">
-  <h1 class="text-3xl font-bold">Todo App</h1>
-  <app-todo-filter [(filter)]="filter" [(showFilter)]="showFilter" />
-  <button
-    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded mt-6"
-    mat-raised-button
-    (click)="openTodo()"
+<ng-container>
+  <div class="container mx-auto w-[500px] mt-12 flex flex-col items-center">
+    <h1 class="text-3xl font-bold">Todo App</h1>
+    <app-todo-filter [(filter)]="filter" [(showFilter)]="showFilter" />
+    <button
+      class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded mt-6"
+      mat-raised-button
+      (click)="openTodo()"
+    >
+      Add todo
+    </button>
+    <app-todo-list [(todoList)]="filterredTodoList" />
+  </div>
+  <div
+    class="bg-gray-100 flex justify-between items-center w-full sticky bottom-0 left-0 z-20 px-2"
   >
-    Add todo
-  </button>
-  <app-todo-list [(todoList)]="filterredTodoList" />
-</div>
+    <div></div>
+    <div>
+      <button
+        class="border-none bg-transparent shadow-none text-gray-600 text-xs hover:text-green-600"
+        (click)="onLogout()"
+      >
+        Log out
+      </button>
+    </div>
+  </div>
+</ng-container>
 <router-outlet />
