@@ -66,7 +66,6 @@ export class AddTodoComponent {
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data?: Todo
   ) {
-    console.log(data);
     if (data) {
       this.form = this.fb.group({
         id: [data.id],
@@ -79,7 +78,7 @@ export class AddTodoComponent {
         subtasks: this.fb.array(
           data.subtasks?.map((subtask) => subtask.title) || ['']
         ),
-        notes: [data.notes],
+        notes: data.notes,
         tags: this.fb.array(
           data.tags && data.tags.length > 0 ? data.tags : [''],
           [Validators.minLength(1)]
@@ -87,16 +86,15 @@ export class AddTodoComponent {
       });
     } else
       this.form = this.fb.group({
-        id: [Number(Math.random().toFixed(4)) * 10000],
         title: ['', Validators.required],
         description: [''],
         dueDate: [new Date(), Validators.required],
         status: [STATUS_VALUE.NOT_STARTED, Validators.required],
         isImportant: [false, Validators.required],
         isUrgent: [false, Validators.required],
-        subtasks: this.fb.array(['']),
-        notes: [''],
-        tags: this.fb.array([this.fb.control('', [Validators.minLength(1)])]),
+        subtasks: this.fb.array([this.fb.control('')]),
+        notes: '',
+        tags: this.fb.array([this.fb.control('')]),
       });
   }
 
@@ -130,6 +128,14 @@ export class AddTodoComponent {
   addTag(event: any, index: number) {
     event.preventDefault();
     if (event.target.value.trim().length === 0) return;
+
+    // Prevent dublicate tags
+    if (
+      this.tags.length > 1 &&
+      this.tags.at(index - 1).value.trim() === event.target.value.trim()
+    )
+      return;
+
     this.currentTagIndex.set(index + 1);
     this.tags.push(this.fb.control(''));
 

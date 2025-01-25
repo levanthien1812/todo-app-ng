@@ -8,6 +8,7 @@ import { TodoFilter } from '../lib/interfaces/filter.interface';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../lib/services/auth.service';
+import { TodoService } from '../lib/services/todo.service';
 
 @Component({
   selector: 'app-todo-app',
@@ -22,9 +23,20 @@ export class TodoAppComponent {
   filter = signal<Partial<TodoFilter> | null>(null);
   showFilter = signal<boolean>(false);
 
-  constructor(public dialog: MatDialog, private authService: AuthService) {
-    this.todoList.set(INITIAL_TODOS);
-    this.filterredTodoList.set(this.todoList());
+  constructor(
+    public dialog: MatDialog,
+    private authService: AuthService,
+    private todoService: TodoService
+  ) {
+    this.todoService.getTodos().subscribe({
+      next: (res) => {
+        this.todoList.set(res);
+        this.filterredTodoList.set(res);
+      },
+      error: (err) => {
+        alert(err.message);
+      },
+    });
 
     effect(
       () => {
@@ -76,13 +88,23 @@ export class TodoAppComponent {
       if (result) {
         const mappedResult = {
           ...result,
-          subtasks: result.subtasks.map((subtask: string) => ({
-            title: subtask,
-            isCompleted: false,
-          })),
+          subtasks: result.subtasks
+            .filter((subtask: string) => subtask.trim().length > 0)
+            .map((subtask: string) => ({
+              title: subtask,
+              isCompleted: false,
+            })),
+          tags: result.tags.filter((tag: string) => tag.trim().length > 0),
         };
-        this.todoList.set([...this.todoList(), mappedResult]);
-        localStorage.setItem('todoList', JSON.stringify(this.todoList()));
+        this.todoService.createTodo(mappedResult).subscribe({
+          next: (res) => {
+            this.todoList.set([...this.todoList(), res]);
+            // localStorage.setItem('todoList', JSON.stringify(this.todoList()));
+          },
+          error: (err) => {
+            alert(err.message);
+          },
+        });
       } else {
         console.log('no result');
       }
