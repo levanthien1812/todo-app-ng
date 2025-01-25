@@ -24,7 +24,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'todos/:todo-id',
+    path: 'todos/:todoId',
     component: TodoDetailComponent,
     title: 'Todo Detail',
     canActivate: [AuthGuard],

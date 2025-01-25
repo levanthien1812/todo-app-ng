@@ -1,8 +1,8 @@
-import { STATUS_VALUE, STATUS_OPTIONS } from './../lib/constants/constant';
+import { STATUS_OPTIONS } from './../lib/constants/constant';
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Todo } from '../lib/interfaces';
-import { getTodoById } from '../lib/services/todo.service';
+import { TodoService } from '../lib/services/todo.service';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
@@ -18,7 +18,11 @@ export class TodoDetailComponent implements OnInit {
   todo = signal<Todo | null>(null);
   status: string;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private todoService: TodoService
+  ) {
     this.status =
       STATUS_OPTIONS.find((option) => option.value === this.todo()?.status)
         ?.label || STATUS_OPTIONS[0].label;
@@ -26,14 +30,16 @@ export class TodoDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(async (params) => {
-      const todoId = +params['todo-id'];
+      const todoId: string = params['todoId'];
 
-      try {
-        const fetchedTodo = await getTodoById(todoId);
-        this.todo.set(fetchedTodo);
-      } catch (err: any) {
-        console.error(err.message);
-      }
+      this.todoService.getTodo(`${todoId}`).subscribe({
+        next: (res) => {
+          this.todo.set(res);
+        },
+        error: (err) => {
+          alert(err.message);
+        },
+      });
     });
   }
 

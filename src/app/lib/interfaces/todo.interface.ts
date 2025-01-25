@@ -14,6 +14,6 @@ export interface Todo {
     title: string;
     isCompleted: boolean;
   }[];
-  notes?: string[];
+  notes?: string;
   tags?: string[];
 }
