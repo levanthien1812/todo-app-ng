@@ -65,9 +65,10 @@
               type="checkbox"
               [checked]="subtask.isCompleted"
               class="mr-3"
-              [name]="subtask.title"
+              [name]="subtask.id"
+              (change)="handleCheckSubtask($event, subtask)"
             />
-            <label class="text-gray-600" [for]="subtask.title">{{
+            <label class="text-gray-600" [for]="subtask.id">{{
               subtask.title
             }}</label>
           </li>
@@ -112,7 +113,7 @@
         <button class="secondary-btn" (click)="clickEditBtn()">Edit</button>
         <a class="secondary-btn" routerLink="/todos">Back to list</a>
       </div>
-      <button class="primary-btn">Delete</button>
+      <button class="primary-btn" (click)="handleDeleteTodo()">Delete</button>
     </div>
   </div>
 </div>

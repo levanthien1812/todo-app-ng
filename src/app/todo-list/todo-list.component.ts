@@ -15,9 +15,9 @@ export class TodoListComponent {
 
   STATUS_OPTIONS = STATUS_OPTIONS;
 
-  onChangeStatus({ status, title }: { status: string; title: string }) {
+  onChangeStatus({ status, id }: { status: string; id: string }) {
     this.todoList.update((prev) => {
-      const todoIndex = prev.findIndex((todo) => todo.title === title);
+      const todoIndex = prev.findIndex((todo) => todo.id === id);
       const updatedTodo = { ...prev[todoIndex], status: status };
       const updatedTodoList = JSON.parse(JSON.stringify(prev));
       updatedTodoList[todoIndex] = updatedTodo;

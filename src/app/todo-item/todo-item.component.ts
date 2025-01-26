@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DatePipe, NgIf } from '@angular/common';
 import { ToggleColorDirective } from '../directives/toggle-color.directive';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TodoService } from '../lib/services/todo.service';
 
 @Component({
   selector: 'app-todo-item',
@@ -24,13 +25,27 @@ export class TodoItemComponent {
   todoItem = input.required<Todo>();
   STATUS_OPTIONS = STATUS_OPTIONS;
 
-  statusChanged = output<{ status: string; title: string }>();
+  statusChanged = output<{ status: string; id: string }>();
+
+  constructor(private todoService: TodoService) {}
 
   onChangeStatus($event: any) {
     this.statusChanged.emit({
       status: $event.target.value,
-      title: this.todoItem().title,
+      id: this.todoItem().id,
     });
+    this.todoService
+      .updateTodo(this.todoItem().id, {
+        status: $event.target.value,
+      })
+      .subscribe({
+        next: (res) => {
+          // this.todoItem.set(res);
+        },
+        error: (err) => {
+          alert(err.message);
+        },
+      });
   }
 
   statusColors: Record<string, { badge: string; border: string }> = {

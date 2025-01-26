@@ -22,4 +22,15 @@ export class TodoService {
   getTodo(todoId: string): Observable<Todo> {
     return this.http.get<Todo>(`${API_ROUTES.GET_TODO}/${todoId}`);
   }
+
+  updateTodo(todoId: string, todoBody: Partial<Todo>): Observable<Todo> {
+    return this.http.patch<Todo>(
+      `${API_ROUTES.UPDATE_TODO}/${todoId}`,
+      todoBody
+    );
+  }
+
+  deleteTodo(todoId: string): Observable<Todo> {
+    return this.http.delete<Todo>(`${API_ROUTES.DELETE_TODO}/${todoId}`);
+  }
 }
