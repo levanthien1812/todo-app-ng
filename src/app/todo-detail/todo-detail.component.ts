@@ -1,7 +1,7 @@
 import { STATUS_OPTIONS } from './../lib/constants/constant';
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Todo } from '../lib/interfaces';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subtask, Todo } from '../lib/interfaces';
 import { TodoService } from '../lib/services/todo.service';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,8 @@ export class TodoDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private router: Router
   ) {
     this.status =
       STATUS_OPTIONS.find((option) => option.value === this.todo()?.status)
@@ -62,6 +63,37 @@ export class TodoDetailComponent implements OnInit {
           tags: result.tags.filter((tag: string) => tag.length > 0),
         });
       }
+    });
+  }
+
+  handleCheckSubtask($event: any, subtask: Subtask) {
+    console.log($event);
+    const updatedSubtasks = this.todo()?.subtasks?.map((st) => {
+      if (st.id === subtask.id) {
+        return { ...subtask, isCompleted: $event.target.checked };
+      }
+      return st;
+    });
+
+    this.todoService
+      .updateTodo(this.todo()?.id!, {
+        subtasks: updatedSubtasks,
+      })
+      .subscribe({
+        error: (err) => {
+          alert(err.message);
+        },
+      });
+  }
+
+  handleDeleteTodo() {
+    this.todoService.deleteTodo(this.todo()?.id!).subscribe({
+      next: (res) => {
+        this.router.navigate(['/todos']);
+      },
+      error: (err) => {
+        alert(err.message);
+      },
     });
   }
 }
