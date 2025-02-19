@@ -52,13 +52,14 @@ export class TodoDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        // this.todoService.updateTodo(this.todo()!.id,  result).subscribe()
         this.todo.set({
           ...result,
           subtasks: result.subtasks
-            .filter((subtask: string) => subtask.length > 0)
-            .map((subtask: string) => ({
-              title: subtask,
-              isCompleted: false,
+            .filter((subtask: Subtask) => subtask.title.trim().length > 0)
+            .map((subtask: Subtask) => ({
+              title: subtask.title,
+              isCompleted: subtask.isCompleted || false,
             })),
           tags: result.tags.filter((tag: string) => tag.length > 0),
         });

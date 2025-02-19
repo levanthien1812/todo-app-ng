@@ -1,7 +1,7 @@
 import { INITIAL_TODOS } from './../lib/data/dummy/todos';
 import { Component, effect, signal, Signal } from '@angular/core';
 import { TodoListComponent } from '../todo-list/todo-list.component';
-import { Todo } from '../lib/interfaces';
+import { Subtask, Todo } from '../lib/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { TodoFilter } from '../lib/interfaces/filter.interface';
@@ -89,10 +89,10 @@ export class TodoAppComponent {
         const mappedResult = {
           ...result,
           subtasks: result.subtasks
-            .filter((subtask: string) => subtask.trim().length > 0)
-            .map((subtask: string) => ({
-              title: subtask,
-              isCompleted: false,
+            .filter((subtask: Subtask) => subtask.title.trim().length > 0)
+            .map((subtask: Subtask) => ({
+              title: subtask.title,
+              isCompleted: subtask.isCompleted || false,
             })),
           tags: result.tags.filter((tag: string) => tag.trim().length > 0),
         };

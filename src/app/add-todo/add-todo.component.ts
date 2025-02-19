@@ -76,7 +76,7 @@ export class AddTodoComponent {
         isImportant: [data.isImportant],
         isUrgent: [data.isUrgent],
         subtasks: this.fb.array(
-          data.subtasks?.map((subtask) => subtask.title) || ['']
+          data.subtasks!.map((st) => this.fb.control(st))
         ),
         notes: data.notes,
         tags: this.fb.array(
@@ -92,7 +92,7 @@ export class AddTodoComponent {
         status: [STATUS_VALUE.NOT_STARTED, Validators.required],
         isImportant: [false, Validators.required],
         isUrgent: [false, Validators.required],
-        subtasks: this.fb.array([this.fb.control('')]),
+        subtasks: this.fb.array([this.createSubtask()]),
         notes: '',
         tags: this.fb.array([this.fb.control('')]),
       });
@@ -100,6 +100,13 @@ export class AddTodoComponent {
 
   get subtasks() {
     return this.form.get('subtasks') as FormArray;
+  }
+
+  createSubtask(): FormGroup {
+    return this.fb.group({
+      title: ['', Validators.required],
+      isCompleted: [false],
+    });
   }
 
   enterSubtask(event: any) {
