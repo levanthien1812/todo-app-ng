@@ -94,5 +94,10 @@
         }
       }
     }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "standalone": true
+    }
   }
 }
