@@ -3,7 +3,7 @@ import { STATUS_VALUE } from '../constants/constant';
 export interface Subtask {
   title: string;
   isCompleted: boolean;
-  id: string;
+  id?: string;
 }
 
 export interface Todo {

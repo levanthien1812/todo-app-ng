@@ -5,7 +5,13 @@
   (ngSubmit)="submit()"
 >
   <p class="mb-4 text-3xl text-center font-bold handlee">Login</p>
-  <div class="form-field">
+  <div
+    *ngIf="error()"
+    class="bg-red-100 border border-red-300 rounded-md px-3 w-full py-1.5"
+  >
+    <p class="text-red-600 text-md">{{ error() }}</p>
+  </div>
+  <div class="form-field mt-2">
     <label class="base-label" appRequiredLabel for="email">Email:</label>
     <input
       class="base-input"

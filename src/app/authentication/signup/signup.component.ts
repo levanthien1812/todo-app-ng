@@ -11,6 +11,9 @@ import { passwordMatchValidator } from '../../lib/validators';
 import { RequiredLabelDirective } from '../../directives/required-label.directive';
 import { EmailExistsValidator } from '../../lib/validators/email.validator';
 import { AuthService } from '../../lib/services/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../../lib/interfaces/auth-state.interface';
+import { login } from '../../store/auth.actions';
 
 @Component({
   selector: 'app-signup',
@@ -22,12 +25,14 @@ import { AuthService } from '../../lib/services/auth.service';
 export class SignupComponent {
   form: FormGroup;
   isCorrectConfirmPassword = signal<boolean>(false);
+  error = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
     private emailExistsValidator: EmailExistsValidator,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<{ auth: AuthState }>
   ) {
     this.form = this.fb.group(
       {
@@ -62,12 +67,30 @@ export class SignupComponent {
       }
     );
 
-    effect(() => {
-      console.log(this.form.value);
-    });
+    // effect(() => {
+    //   console.log(this.form.value);
+    // });
   }
 
   onSubmit() {
-    this.authService.register(this.form.value);
+    this.authService.register(this.form.value).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('access_token', res.tokens.access.token);
+
+        this.store.dispatch(
+          login({
+            user: { name: res.user.name, email: res.user.email },
+            token: res.tokens.access.token,
+          })
+        );
+
+        this.router.navigate(['/todos']);
+        this.error.set(null);
+      },
+      error: (err) => {
+        console.log({ err });
+        this.error.set(err?.error?.message || null);
+      },
+    });
   }
 }

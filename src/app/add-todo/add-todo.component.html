@@ -46,13 +46,17 @@
       <div *ngIf="showDetail()" class="mt-4">
         <mat-label for="">Subtasks</mat-label>
         <div class="border rounded-md border-gray-500 p-4">
-          <div *ngFor="let subtask of subtasks.controls; let i = index">
+          <div
+            class="flex flex-col justify-between items-center space-x-2"
+            formArrayName="subtasks"
+          >
             <div
-              class="flex justify-between items-center space-x-2"
-              formArrayName="subtasks"
+              *ngFor="let subtask of subtasks.controls; let i = index"
+              [formGroupName]="i"
             >
               <input
-                [formControlName]="i"
+                id="task-{{ i }}"
+                formControlName="title"
                 placeholder="Enter subtask"
                 class="w-full rounded-md px-2 py-2 border-green-600 g-white text-black border outline-none text-center text-sm"
                 (keydown.enter)="enterSubtask($event)"
