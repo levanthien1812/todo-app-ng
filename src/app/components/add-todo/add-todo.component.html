@@ -46,13 +46,11 @@
       <div *ngIf="showDetail()" class="mt-4">
         <mat-label for="">Subtasks</mat-label>
         <div class="border rounded-md border-gray-500 p-4">
-          <div
-            class="flex flex-col justify-between items-center space-x-2"
-            formArrayName="subtasks"
-          >
+          <div class="space-y-2" formArrayName="subtasks">
             <div
               *ngFor="let subtask of subtasks.controls; let i = index"
               [formGroupName]="i"
+              class="flex items-center space-x-2"
             >
               <input
                 id="task-{{ i }}"

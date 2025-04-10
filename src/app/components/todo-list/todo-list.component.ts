@@ -1,6 +1,6 @@
-import { STATUS_OPTIONS } from './../lib/constants/constant';
+import { STATUS_OPTIONS } from '../../lib/constants/constant';
 import { Component, EventEmitter, input, model, output } from '@angular/core';
-import { Todo } from '../lib/interfaces';
+import { Todo } from '../../lib/interfaces';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({

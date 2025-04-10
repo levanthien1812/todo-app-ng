@@ -1,6 +1,6 @@
 import { Component, input, model, output, signal } from '@angular/core';
-import { Todo } from '../lib/interfaces';
-import { TodoFilter } from '../lib/interfaces/filter.interface';
+import { Todo } from '../../lib/interfaces';
+import { TodoFilter } from '../../lib/interfaces/filter.interface';
 import { NgIf } from '@angular/common';
 
 const INITIAL_FILTER: Partial<TodoFilter> = {

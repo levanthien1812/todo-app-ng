@@ -2,7 +2,7 @@ import {
   ALLOWED_MAXIMUM_TAGS,
   STATUS_OPTIONS,
   STATUS_VALUE,
-} from './../lib/constants/constant';
+} from '../../lib/constants/constant';
 import {
   Component,
   ElementRef,
@@ -31,7 +31,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { Todo } from '../lib/interfaces';
+import { Todo } from '../../lib/interfaces';
 
 @Component({
   selector: 'app-add-todo',
@@ -66,6 +66,7 @@ export class AddTodoComponent {
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data?: Todo
   ) {
+    console.log(data);
     if (data) {
       this.form = this.fb.group({
         id: [data.id],
@@ -75,9 +76,7 @@ export class AddTodoComponent {
         status: [data.status],
         isImportant: [data.isImportant],
         isUrgent: [data.isUrgent],
-        subtasks: this.fb.array(
-          data.subtasks!.map((st) => this.fb.control(st))
-        ),
+        subtasks: this.fb.array(data.subtasks!.map((st) => this.fb.group(st))),
         notes: data.notes,
         tags: this.fb.array(
           data.tags && data.tags.length > 0 ? data.tags : [''],
@@ -114,7 +113,7 @@ export class AddTodoComponent {
   }
 
   addSubtask() {
-    this.subtasks.push(this.fb.control(''));
+    this.subtasks.push(this.createSubtask());
   }
 
   removeSubtask(index: number) {
