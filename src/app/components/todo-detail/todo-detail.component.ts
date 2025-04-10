@@ -1,8 +1,8 @@
-import { STATUS_OPTIONS } from './../lib/constants/constant';
+import { STATUS_OPTIONS } from '../../lib/constants/constant';
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Subtask, Todo } from '../lib/interfaces';
-import { TodoService } from '../lib/services/todo.service';
+import { Subtask, Todo } from '../../lib/interfaces';
+import { TodoService } from '../../lib/services/todo.service';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
@@ -52,16 +52,23 @@ export class TodoDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // this.todoService.updateTodo(this.todo()!.id,  result).subscribe()
-        this.todo.set({
-          ...result,
-          subtasks: result.subtasks
-            .filter((subtask: Subtask) => subtask.title.trim().length > 0)
-            .map((subtask: Subtask) => ({
-              title: subtask.title,
-              isCompleted: subtask.isCompleted || false,
-            })),
-          tags: result.tags.filter((tag: string) => tag.length > 0),
+        this.todoService.updateTodo(this.todo()!.id, result).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.todo.set({
+              ...result,
+              subtasks: result.subtasks
+                .filter((subtask: Subtask) => subtask.title.trim().length > 0)
+                .map((subtask: Subtask) => ({
+                  title: subtask.title,
+                  isCompleted: subtask.isCompleted || false,
+                })),
+              tags: result.tags.filter((tag: string) => tag.length > 0),
+            });
+          },
+          error: (err) => {
+            alert(err.message);
+          },
         });
       }
     });

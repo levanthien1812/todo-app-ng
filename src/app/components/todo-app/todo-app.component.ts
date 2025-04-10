@@ -1,14 +1,14 @@
-import { INITIAL_TODOS } from './../lib/data/dummy/todos';
+import { INITIAL_TODOS } from '../../lib/data/dummy/todos';
 import { Component, effect, signal, Signal } from '@angular/core';
 import { TodoListComponent } from '../todo-list/todo-list.component';
-import { Subtask, Todo } from '../lib/interfaces';
+import { Subtask, Todo } from '../../lib/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
-import { TodoFilter } from '../lib/interfaces/filter.interface';
+import { TodoFilter } from '../../lib/interfaces/filter.interface';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from '../lib/services/auth.service';
-import { TodoService } from '../lib/services/todo.service';
+import { AuthService } from '../../lib/services/auth.service';
+import { TodoService } from '../../lib/services/todo.service';
 
 @Component({
   selector: 'app-todo-app',
@@ -109,9 +109,5 @@ export class TodoAppComponent {
         console.log('no result');
       }
     });
-  }
-
-  onLogout(): void {
-    this.authService.logout();
   }
 }

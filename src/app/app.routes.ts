@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { TodoAppComponent } from './todo-app/todo-app.component';
-import { TodoDetailComponent } from './todo-detail/todo-detail.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { TodoAppComponent } from './components/todo-app/todo-app.component';
+import { TodoDetailComponent } from './components/todo-detail/todo-detail.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './lib/services/auth.guard';
