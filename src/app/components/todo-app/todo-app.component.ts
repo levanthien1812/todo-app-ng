@@ -1,14 +1,16 @@
 import { INITIAL_TODOS } from '../../lib/data/dummy/todos';
-import { Component, effect, signal, Signal } from '@angular/core';
+import { Component, effect, OnInit, signal, Signal } from '@angular/core';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { Subtask, Todo } from '../../lib/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { TodoFilter } from '../../lib/interfaces/filter.interface';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../lib/services/auth.service';
 import { TodoService } from '../../lib/services/todo.service';
+import { HttpParams } from '@angular/common/http';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-app',
@@ -17,66 +19,47 @@ import { TodoService } from '../../lib/services/todo.service';
   templateUrl: './todo-app.component.html',
   styleUrl: './todo-app.component.css',
 })
-export class TodoAppComponent {
-  todoList = signal<Todo[]>([]);
-  filterredTodoList = signal<Todo[]>([]);
-  filter = signal<Partial<TodoFilter> | null>(null);
+export class TodoAppComponent implements OnInit {
+  todos$: Observable<Todo[]> = new Observable();
+  filter: Partial<TodoFilter> | null = null;
   showFilter = signal<boolean>(false);
+  private queryParamsSubscription: Subscription | undefined;
 
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
-    private todoService: TodoService
-  ) {
-    this.todoService.getTodos().subscribe({
-      next: (res) => {
-        this.todoList.set(res);
-        this.filterredTodoList.set(res);
-      },
-      error: (err) => {
-        alert(err.message);
-      },
-    });
+    private todoService: TodoService,
+    private route: ActivatedRoute
+  ) {}
 
-    effect(
-      () => {
-        const filter = this.filter();
-        let filteredTodoList = this.todoList();
-        if (filter) {
-          if (filter.startDate) {
-            filteredTodoList = this.todoList().filter(
-              (todo) => todo.dueDate >= filter.startDate!
-            );
-          }
-          if (filter.endDate) {
-            filteredTodoList = filteredTodoList.filter(
-              (todo) => todo.dueDate <= filter.startDate!
-            );
-          }
-          if (filter.searchString) {
-            filteredTodoList = filteredTodoList.filter(
-              (todo) =>
-                todo.title.includes(filter.searchString!) ||
-                todo.description.includes(filter.searchString!)
-            );
-          }
-          if (filter.isImportant) {
-            filteredTodoList = filteredTodoList.filter(
-              (todo) => todo.isImportant === filter.isImportant
-            );
-          }
-          if (filter.isUrgent) {
-            filteredTodoList = filteredTodoList.filter(
-              (todo) => todo.isUrgent === filter.isUrgent
-            );
-          }
-        }
-        this.filterredTodoList.set(filteredTodoList);
-      },
-      {
-        allowSignalWrites: true,
+  ngOnInit(): void {
+    this.queryParamsSubscription = this.route.queryParams.subscribe(
+      (queryParams) => {
+        console.log(queryParams);
+        this.handleQueryParams(queryParams);
       }
     );
+  }
+
+  handleQueryParams(queryParams: any) {
+    if (queryParams && queryParams['filter']) {
+      this.filter = JSON.parse(queryParams['filter']);
+    }
+
+    console.log({ fitler: this.filter });
+
+    let params = new HttpParams();
+    for (const key in this.filter) {
+      if (this.filter.hasOwnProperty(key)) {
+        const value = this.filter[key as keyof TodoFilter];
+        if (value !== undefined) {
+          params = params.set(key, value.toString());
+        }
+      }
+    }
+    console.log(params);
+
+    this.todos$ = this.todoService.getTodos(params);
   }
 
   openTodo(): void {
@@ -98,7 +81,7 @@ export class TodoAppComponent {
         };
         this.todoService.createTodo(mappedResult).subscribe({
           next: (res) => {
-            this.todoList.set([...this.todoList(), res]);
+            // this.todoList.set([...this.todoList(), res]);
             // localStorage.setItem('todoList', JSON.stringify(this.todoList()));
           },
           error: (err) => {

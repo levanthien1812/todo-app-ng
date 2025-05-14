@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { passwordMatchValidator } from '../../lib/validators';
-import { RequiredLabelDirective } from '../../directives/required-label.directive';
+import { RequiredLabelDirective } from '../../lib/directives/required-label.directive';
 import { EmailExistsValidator } from '../../lib/validators/email.validator';
 import { AuthService } from '../../lib/services/auth.service';
 import { Store } from '@ngrx/store';

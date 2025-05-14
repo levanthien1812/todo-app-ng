@@ -3,7 +3,7 @@ import { Component, input, output } from '@angular/core';
 import { Todo } from '../../lib/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe, NgIf } from '@angular/common';
-import { ToggleColorDirective } from '../../directives/toggle-color.directive';
+import { ToggleColorDirective } from '../../lib/directives/toggle-color.directive';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TodoService } from '../../lib/services/todo.service';
 

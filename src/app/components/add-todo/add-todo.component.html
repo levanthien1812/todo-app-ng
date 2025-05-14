@@ -79,7 +79,7 @@
         <div class="mt-4">
           <mat-label for="">Tags</mat-label>
           <div class="flex space-x-2 mt-2 flex-wrap">
-            <div *ngFor="let tag of tags.controls; let i = index">
+            <ng-container *ngFor="let tag of tags.controls; let i = index">
               <div formArrayName="tags">
                 <input
                   type="text"
@@ -94,7 +94,7 @@
                   class="min-w-[100px] w-0 rounded-full px-2 py-2 border-green-600 border outline-none text-center text-sm"
                 />
               </div>
-            </div>
+            </ng-container>
           </div>
         </div>
 

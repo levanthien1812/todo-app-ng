@@ -1,14 +1,14 @@
 <div class="mt-6">
-  <ul class="list-none space-y-2">
-    @for (todoItem of todoList(); track todoItem.title) {
-    <li>
+  <ul class="list-none space-y-2" *ngIf="todos | async as todos">
+    <li *ngFor="let todo of todos">
       <app-todo-item
-        [todoItem]="todoItem"
+        [todoItem]="todo"
         (statusChanged)="onChangeStatus($event)"
       />
     </li>
-    } @empty {
-    <p class="text-2xl text-center text-gray-600 mt-4">No todos found</p>
-    }
+
+    <p *ngIf="!todos!.length" class="text-2xl text-center text-gray-600 mt-4">
+      No todos found
+    </p>
   </ul>
 </div>

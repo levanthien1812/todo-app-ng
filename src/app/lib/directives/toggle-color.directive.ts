@@ -5,8 +5,8 @@ import {
   HostListener,
   input,
 } from '@angular/core';
-import { STATUS_VALUE } from '../lib/constants/constant';
-import { hexToRgb } from '../lib/utils/hex-to-rgb';
+import { STATUS_VALUE } from '../constants/constant';
+import { hexToRgb } from '../utils/hex-to-rgb';
 
 @Directive({
   selector: '[appToggleColor]',

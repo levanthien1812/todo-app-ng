@@ -2,6 +2,7 @@ import { Component, input, model, output, signal } from '@angular/core';
 import { Todo } from '../../lib/interfaces';
 import { TodoFilter } from '../../lib/interfaces/filter.interface';
 import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 const INITIAL_FILTER: Partial<TodoFilter> = {
   startDate: undefined,
@@ -20,16 +21,23 @@ const INITIAL_FILTER: Partial<TodoFilter> = {
   styleUrl: './todo-filter.component.css',
 })
 export class TodoFilterComponent {
-  filter = model.required<Partial<TodoFilter> | null>();
+  // filter = model.required<Partial<TodoFilter> | null>();
   showFilter = model.required<boolean>();
   currentFilter = signal<Partial<TodoFilter>>(INITIAL_FILTER);
 
+  constructor(private router: Router) {}
+
   applyFilter(): void {
-    this.filter.update(() => this.currentFilter());
+    // this.filter.update(() => this.currentFilter());
+    this.router.navigate(['/todos'], {
+      queryParams: {
+        filter: JSON.stringify(this.currentFilter()),
+      },
+    });
   }
 
   resetFilter(): void {
-    this.filter.update(() => INITIAL_FILTER);
+    this.currentFilter.update(() => INITIAL_FILTER);
   }
 
   toggleFilter(): void {
