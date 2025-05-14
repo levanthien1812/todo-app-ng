@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { RequiredLabelDirective } from '../../directives/required-label.directive';
+import { RequiredLabelDirective } from '../../lib/directives/required-label.directive';
 import { AuthService } from '../../lib/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../lib/interfaces/auth-state.interface';

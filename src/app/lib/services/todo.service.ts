@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { INITIAL_TODOS } from '../data/dummy/todos';
 import { Todo } from '../interfaces';
 import { Observable } from 'rxjs';
@@ -15,8 +15,8 @@ export class TodoService {
     return this.http.post<Todo>(API_ROUTES.CREATE_TODO, todoBody);
   }
 
-  getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(API_ROUTES.GET_TODOS);
+  getTodos(params?: HttpParams): Observable<Todo[]> {
+    return this.http.get<Todo[]>(API_ROUTES.GET_TODOS, { params });
   }
 
   getTodo(todoId: string): Observable<Todo> {
