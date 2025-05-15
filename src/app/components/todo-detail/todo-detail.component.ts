@@ -54,7 +54,6 @@ export class TodoDetailComponent implements OnInit {
       if (result) {
         this.todoService.updateTodo(this.todo()!.id, result).subscribe({
           next: (res) => {
-            console.log(res);
             this.todo.set({
               ...result,
               subtasks: result.subtasks

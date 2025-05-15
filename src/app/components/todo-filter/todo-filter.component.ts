@@ -1,16 +1,19 @@
-import { Component, input, model, output, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  input,
+  model,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { Todo } from '../../lib/interfaces';
 import { TodoFilter } from '../../lib/interfaces/filter.interface';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 
 const INITIAL_FILTER: Partial<TodoFilter> = {
-  startDate: undefined,
-  endDate: undefined,
   searchString: '',
-  status: undefined,
-  isImportant: false,
-  isUrgent: false,
 };
 
 @Component({
@@ -20,15 +23,21 @@ const INITIAL_FILTER: Partial<TodoFilter> = {
   templateUrl: './todo-filter.component.html',
   styleUrl: './todo-filter.component.css',
 })
-export class TodoFilterComponent {
-  // filter = model.required<Partial<TodoFilter> | null>();
+export class TodoFilterComponent implements OnInit {
   showFilter = model.required<boolean>();
+  filter = input.required<Partial<TodoFilter> | null>();
   currentFilter = signal<Partial<TodoFilter>>(INITIAL_FILTER);
 
   constructor(private router: Router) {}
 
-  applyFilter(): void {
-    // this.filter.update(() => this.currentFilter());
+  ngOnInit(): void {
+    const filterValue = this.filter();
+    if (filterValue) {
+      this.currentFilter.set(filterValue);
+    }
+  }
+
+  navigateTodosWithFilter(): void {
     this.router.navigate(['/todos'], {
       queryParams: {
         filter: JSON.stringify(this.currentFilter()),
@@ -36,8 +45,13 @@ export class TodoFilterComponent {
     });
   }
 
+  applyFilter(): void {
+    this.navigateTodosWithFilter();
+  }
+
   resetFilter(): void {
     this.currentFilter.update(() => INITIAL_FILTER);
+    this.navigateTodosWithFilter();
   }
 
   toggleFilter(): void {
@@ -45,7 +59,6 @@ export class TodoFilterComponent {
   }
 
   changeField($event: any): void {
-    console.log('changed');
     let customizedValue = $event.target.value;
     if (
       $event.target.name === 'isImportant' ||
