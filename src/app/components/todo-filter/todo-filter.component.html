@@ -48,6 +48,7 @@
           class="ms-1"
           [value]="currentFilter().isImportant"
           (input)="changeField($event)"
+          [checked]="currentFilter().isImportant"
         />
       </div>
       <div>
@@ -59,6 +60,7 @@
           class="ms-1"
           [value]="currentFilter().isUrgent"
           (input)="changeField($event)"
+          [checked]="currentFilter().isUrgent"
         />
       </div>
     </div>

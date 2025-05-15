@@ -91,9 +91,9 @@ export class AddTodoComponent {
         status: [STATUS_VALUE.NOT_STARTED, Validators.required],
         isImportant: [false, Validators.required],
         isUrgent: [false, Validators.required],
-        subtasks: this.fb.array([this.createSubtask()]),
+        subtasks: this.fb.array([]),
         notes: '',
-        tags: this.fb.array([this.fb.control('')]),
+        tags: this.fb.array([]),
       });
   }
 
@@ -121,7 +121,6 @@ export class AddTodoComponent {
   }
 
   onSubmit(): void {
-    console.log(this.form.value);
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

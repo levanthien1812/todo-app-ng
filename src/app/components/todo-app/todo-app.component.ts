@@ -35,7 +35,6 @@ export class TodoAppComponent implements OnInit {
   ngOnInit(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe(
       (queryParams) => {
-        console.log(queryParams);
         this.handleQueryParams(queryParams);
       }
     );
@@ -46,8 +45,6 @@ export class TodoAppComponent implements OnInit {
       this.filter = JSON.parse(queryParams['filter']);
     }
 
-    console.log({ fitler: this.filter });
-
     let params = new HttpParams();
     for (const key in this.filter) {
       if (this.filter.hasOwnProperty(key)) {
@@ -57,7 +54,6 @@ export class TodoAppComponent implements OnInit {
         }
       }
     }
-    console.log(params);
 
     this.todos$ = this.todoService.getTodos(params);
   }
@@ -81,8 +77,7 @@ export class TodoAppComponent implements OnInit {
         };
         this.todoService.createTodo(mappedResult).subscribe({
           next: (res) => {
-            // this.todoList.set([...this.todoList(), res]);
-            // localStorage.setItem('todoList', JSON.stringify(this.todoList()));
+            this.todos$ = this.todoService.getTodos();
           },
           error: (err) => {
             alert(err.message);
