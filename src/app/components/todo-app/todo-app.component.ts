@@ -14,7 +14,6 @@ import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-app',
-  standalone: true,
   imports: [TodoListComponent, TodoFilterComponent, RouterOutlet],
   templateUrl: './todo-app.component.html',
   styleUrl: './todo-app.component.css',

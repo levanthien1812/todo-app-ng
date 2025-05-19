@@ -18,7 +18,6 @@ const INITIAL_FILTER: Partial<TodoFilter> = {
 
 @Component({
   selector: 'app-todo-filter',
-  standalone: true,
   imports: [NgIf],
   templateUrl: './todo-filter.component.html',
   styleUrl: './todo-filter.component.css',

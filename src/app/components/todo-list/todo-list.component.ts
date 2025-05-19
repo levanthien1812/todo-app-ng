@@ -1,12 +1,5 @@
 import { STATUS_OPTIONS } from '../../lib/constants/constant';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  input,
-  model,
-  output,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Todo } from '../../lib/interfaces';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { Observable } from 'rxjs';
@@ -14,7 +7,6 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-todo-list',
-  standalone: true,
   imports: [TodoItemComponent, AsyncPipe, NgIf, NgFor],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.css',

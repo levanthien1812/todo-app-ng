@@ -4,6 +4,8 @@ import {
   STATUS_VALUE,
 } from '../../lib/constants/constant';
 import {
+  Attribute,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Inject,
@@ -35,7 +37,6 @@ import { Todo } from '../../lib/interfaces';
 
 @Component({
   selector: 'app-add-todo',
-  standalone: true,
   imports: [
     MatDialogModule,
     ReactiveFormsModule,
@@ -66,7 +67,6 @@ export class AddTodoComponent {
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data?: Todo
   ) {
-    console.log(data);
     if (data) {
       this.form = this.fb.group({
         id: [data.id],

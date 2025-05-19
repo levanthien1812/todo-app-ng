@@ -17,7 +17,6 @@ import { login } from '../../store/auth.actions';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterLink, NgIf, RequiredLabelDirective],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',

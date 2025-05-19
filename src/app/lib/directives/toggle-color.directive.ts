@@ -10,7 +10,6 @@ import { hexToRgb } from '../utils/hex-to-rgb';
 
 @Directive({
   selector: '[appToggleColor]',
-  standalone: true,
 })
 export class ToggleColorDirective {
   currentStatus =
