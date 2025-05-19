@@ -1,5 +1,11 @@
 import { STATUS_OPTIONS } from '../../lib/constants/constant';
-import { Component, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subtask, Todo } from '../../lib/interfaces';
 import { TodoService } from '../../lib/services/todo.service';
@@ -9,13 +15,15 @@ import { AddTodoComponent } from '../add-todo/add-todo.component';
 
 @Component({
   selector: 'app-todo-detail',
-  standalone: true,
   imports: [DatePipe, NgIf, RouterLink, NgFor],
   templateUrl: './todo-detail.component.html',
   styleUrl: './todo-detail.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoDetailComponent implements OnInit {
   todo = signal<Todo | null>(null);
+  countSubtasksDone = signal<number>(0);
+
   status: string;
 
   constructor(
@@ -27,6 +35,13 @@ export class TodoDetailComponent implements OnInit {
     this.status =
       STATUS_OPTIONS.find((option) => option.value === this.todo()?.status)
         ?.label || STATUS_OPTIONS[0].label;
+
+    effect(() => {
+      this.countSubtasksDone.set(
+        this.todo()?.subtasks?.filter((subtask) => subtask.isCompleted)
+          .length || 0
+      );
+    });
   }
 
   ngOnInit() {
@@ -74,7 +89,6 @@ export class TodoDetailComponent implements OnInit {
   }
 
   handleCheckSubtask($event: any, subtask: Subtask) {
-    console.log($event);
     const updatedSubtasks = this.todo()?.subtasks?.map((st) => {
       if (st.id === subtask.id) {
         return { ...subtask, isCompleted: $event.target.checked };
@@ -87,6 +101,9 @@ export class TodoDetailComponent implements OnInit {
         subtasks: updatedSubtasks,
       })
       .subscribe({
+        next: (res: any) => {
+          this.todo.set(res.todo);
+        },
         error: (err) => {
           alert(err.message);
         },

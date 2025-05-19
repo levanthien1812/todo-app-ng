@@ -9,15 +9,7 @@ import { TodoService } from '../../lib/services/todo.service';
 
 @Component({
   selector: 'app-todo-item',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    DatePipe,
-    ToggleColorDirective,
-    RouterLink,
-    RouterLinkActive,
-    NgIf,
-  ],
+  imports: [MatIconModule, DatePipe, ToggleColorDirective, RouterLink, NgIf],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.css',
 })
